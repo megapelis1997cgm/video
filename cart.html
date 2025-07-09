@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>CARTERA -PROECODEAL</title>
+    <link rel="shortcut icon" href="images/iconogoo.png" type="image/x-icon">
+
+</head>
+<body>
+
+        <div class="contenedor">
+            <div class="header-cursos">
+                <nav>
+                    <a href="index.html"><img src="images/logo negro.png" "></a>
+                    <div class="nav-links-cursos" id="navLinks">
+                        <i class="fa fa-times" onclick="hideMenu()"></i>
+                        <ul>
+                            <li><a href="index.html">INICIO</a></li>
+                            <li><a href="servicios.html">SERVICIOS</a></li>
+                            <li><a href="productos.html">PRODUCTOS</a></li>
+                            <li><a href="nosotros.html">NOSOTROS</a></li>
+                            <li><a href="cursos.html">CURSOS</a></li>
+                            <li><a href="contacto.html">CONTACTO</a></li>
+                            <li><a href="cart.html"><i class="fas fa-shopping-cart">    Cartera</i></a></li>
+                            <li><li><a href="account.html"><i class="fas fa-user"></i></a></li></a></li>
+                        </ul>
+                    </div>
+                    <i class="fa fa-bars" onclick="showMenu()"></i>
+                </nav
+                <!---detalles de la compra de productos-->
+                <div class="small-container cart-page">
+                    <table>
+                        <tr clas>
+                            <th>Productos</th>
+                            <th>Cantidad</th>
+                            <th>SubTotal</th>
+            
+                        </tr>
+                        <tr>
+                        <td>
+                            <div class="cart-info">
+                                <img src="images/espumaoferta.png" >
+                                <div>
+                                    <p>Espuma Acústica</p>
+                                    <small>Price: $13.00</small>
+                                    <a href="">Remover</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" value="1"></td>
+                        <td>$13.00</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="cart-info">
+                                <img src="images/curso1.jpg" >
+                                <div>
+                                    <p>Red Printed T-Shirt</p>
+                                    <small>Price: $12.99</small>
+                                    <a href="">Remove</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td><input type="number" value="1"></td>
+                        <td>$12.99</td>
+                    </tr>
+                    
+            
+            
+                    </table>
+            
+                    <div class="total-price">
+                        <table>
+                            <tr>
+                                <td>Subtototal</td>
+                                <td>$25.99</td>
+                            </tr>
+                            <tr>
+                                <td>Envio</td>
+                                <td>Gratis</td>
+                            </tr>
+                            <tr>
+                                <td>Total</td>
+                                <td>$25.99</td>
+                            </tr>
+                                
+            
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+
+
+
+                   
+                   <!--    footer o final-->
+                   <div class="footer">
+                       <div class="container">
+                           <div class="row">
+                               <div class="footer-col-1">
+                                   <h3>Descarga nuestra App</h3>
+                                   <p>Descargar App para Android y Ios </p>
+                                   <div class="app-logo">
+                                       <img src="images/play-store.png">
+                                       <img src="images/app-store.png">
+                
+                                   </div>
+                               </div>
+                               <div class="footer-col-2">
+                                   <img src="images/logo-blanco.png" >
+                                   <p>Nuestro proposito es brindar productos de calidad reducidos de desechos, cudidando nuestro planeta. </p>
+                                   
+                               </div>
+                               <div class="footer-col-3">
+                                   <h3>Agregados</h3>
+                                   <ul>
+                                       <li>Cupones</li>
+                                       <li>Blog</li>
+                                       <li>Politica de reembolsos</li>
+                                       <li>Afiliate</li>
+                
+                                   </ul>
+                               </div>
+                               <div class="footer-col-4">
+                                   <h3>Redes Sociales</h3>
+                                   <ul>
+                                       <li>Facebook</li>
+                                       <li>Twitter</li>
+                                       <li>Instagram</li>
+                                       <li>Youtube</li>
+                
+                                   </ul>
+                               </div>
+                           </div>
+                           <hr>
+                           <p class="copyright">Copyright 2021 | PROECODEAL</p>
+                       </div>
+                   </div>
+            </div>
+        
+            <!---Imagenes categorias-->
+
+ 
+
+
+            <script>
+            
+        var navLinks = document.getElementById("navLinks");
+function showMenu(){
+    navLinks.style.right = "0";
+}
+function hideMenu(){
+    navLinks.style.right = "-200px";
+}
+
+    </script>
+
+
+            
+            <!---  cronometro https://www.youtube.com/watch?v=ecDdq-Md_dg-->  
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/2c36e9b7b1.js" crossorigin="anonymous"></script>
+
+    <!----  js de prodcuto galeria-->
+    <script>
+        var ProductImg =document.getElementById("ProductImg");
+        var SmallImg=document.getElementsByClassName("small-img");
+
+        SmallImg[0].onclick =function(){
+            ProductImg.src=SmallImg[0].src;
+        }
+        SmallImg[1].onclick =function(){
+            ProductImg.src=SmallImg[1].src;
+        }
+        SmallImg[2].onclick =function(){
+            ProductImg.src=SmallImg[2].src;
+        }
+        SmallImg[3].onclick =function(){
+            ProductImg.src=SmallImg[3].src;
+        }
+    </script>
+</body>
+</html>
