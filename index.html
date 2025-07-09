@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descargador de Videos Web</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-2xl mx-auto">
+        <div class="glassmorphism rounded-2xl shadow-2xl p-6 md:p-10">
+            
+            <!-- Encabezado -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-white">Descargador de Videos Universal</h1>
+                <p class="text-gray-300 mt-2">Pega el enlace de cualquier video para comenzar.</p>
+            </div>
+
+            <!-- Formulario de Entrada -->
+            <form id="download-form" class="space-y-6">
+                <!-- Campo de URL -->
+                <div>
+                    <label for="video_url" class="block text-sm font-medium text-gray-200 mb-2">Enlace del Video</label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <i class="fas fa-link text-gray-400"></i>
+                        </span>
+                        <input type="url" id="video_url" name="video_url" class="w-full bg-gray-800 border border-gray-600 text-white rounded-lg pl-10 pr-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200" placeholder="https://..." required>
+                    </div>
+                </div>
+
+                <!-- Opciones de Formato y Calidad -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="format_type" class="block text-sm font-medium text-gray-200 mb-2">Formato</label>
+                        <select id="format_type" name="format_type" class="w-full bg-gray-800 border border-gray-600 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                            <option value="mp4">Video (MP4)</option>
+                            <option value="mp3">Audio (MP3)</option>
+                        </select>
+                    </div>
+                    <div id="quality-selector-div">
+                        <label for="video_quality" class="block text-sm font-medium text-gray-200 mb-2">Calidad (Video)</label>
+                        <select id="video_quality" name="video_quality" class="w-full bg-gray-800 border border-gray-600 text-white rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200">
+                            <option>1080p (Full HD)</option>
+                            <option>720p (HD)</option>
+                            <option>480p</option>
+                            <option>360p</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Botón de Descarga -->
+                <button type="submit" id="download-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg flex items-center justify-center transition duration-300 transform hover:scale-105">
+                    <i class="fas fa-download mr-2"></i>
+                    <span>Descargar</span>
+                </button>
+            </form>
+
+            <!-- Área de Resultados y Progreso -->
+            <div id="result-area" class="mt-8 text-center">
+                <!-- Aquí se mostrarán los mensajes de estado, progreso y enlaces de descarga -->
+            </div>
+        </div>
+        
+        <footer class="text-center mt-6 text-gray-500 text-sm">
+            <p>Potenciado por yt-dlp. Creado con fines demostrativos.</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- Referencias a Elementos del DOM ---
+        const form = document.getElementById('download-form');
+        const urlInput = document.getElementById('video_url');
+        const formatSelector = document.getElementById('format_type');
+        const qualitySelector = document.getElementById('video_quality');
+        const qualitySelectorDiv = document.getElementById('quality-selector-div');
+        const downloadButton = document.getElementById('download-button');
+        const resultArea = document.getElementById('result-area');
+
+        // --- Lógica de la Interfaz ---
+
+        // Mostrar u ocultar el selector de calidad basado en el formato elegido
+        formatSelector.addEventListener('change', () => {
+            qualitySelectorDiv.style.display = formatSelector.value === 'mp3' ? 'none' : 'block';
+        });
+
+        // Manejar el envío del formulario
+        form.addEventListener('submit', (event) => {
+            event.preventDefault(); // Evitar que la página se recargue
+            
+            const url = urlInput.value;
+            if (!isValidUrl(url)) {
+                showResult('<i class="fas fa-exclamation-triangle mr-2"></i> Por favor, introduce un enlace válido.', 'error');
+                return;
+            }
+
+            // Simular el proceso de descarga
+            simulateDownload();
+        });
+
+        /**
+         * Simula el proceso de descarga y genera un archivo local de demostración.
+         */
+        function simulateDownload() {
+            downloadButton.disabled = true;
+            downloadButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
+            resultArea.innerHTML = '';
+
+            const progressHTML = `
+                <div class="w-full bg-gray-700 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="progress-text" class="text-sm text-gray-300 mt-2">Iniciando descarga...</p>
+            `;
+            resultArea.innerHTML = progressHTML;
+
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    
+                    // --- Lógica para crear y descargar el archivo de demostración ---
+                    const format = formatSelector.value;
+                    const quality = qualitySelector.options[qualitySelector.selectedIndex].text.split(' ')[0];
+                    const extension = format === 'mp4' ? 'txt' : 'txt'; // Usamos .txt para la demo
+                    const fileName = `video_demostracion_${quality}.${extension}`;
+                    
+                    const fileContent = `Este es un archivo de demostración.\n\nURL solicitada: ${urlInput.value}\nFormato: ${format}\nCalidad: ${quality}\n\nEn una aplicación real, este archivo contendría los datos del video o audio.`;
+                    const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+                    const downloadUrl = URL.createObjectURL(blob);
+
+                    const successMessage = `
+                        <div class="bg-green-900/50 border border-green-500 text-green-300 px-4 py-3 rounded-lg relative text-left">
+                           <strong class="font-bold block"><i class="fas fa-check-circle mr-2"></i>¡Simulación completada!</strong>
+                           <span class="block sm:inline">Tu archivo de demostración está listo para descargar.</span>
+                           <div class="mt-4">
+                                <a href="${downloadUrl}" download="${fileName}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg inline-block transition duration-300 transform hover:scale-105">
+                                    <i class="fas fa-file-download mr-2"></i>Guardar Archivo de Demostración
+                                </a>
+                           </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Nota: Se descargará un archivo de texto de ejemplo para demostrar la funcionalidad.</p>
+                    `;
+                    
+                    showResult(successMessage, 'success');
+                    resetButton();
+                    
+                    // Limpiar el objeto URL para liberar memoria
+                    setTimeout(() => URL.revokeObjectURL(downloadUrl), 60000);
+
+                } else {
+                    width += Math.random() * 10;
+                    width = Math.min(width, 100);
+                    progressBar.style.width = width + '%';
+                    progressText.innerText = `Descargando... ${Math.round(width)}%`;
+                }
+            }, 200);
+        }
+
+        /**
+         * Muestra un mensaje en el área de resultados.
+         * @param {string} message - El mensaje HTML a mostrar.
+         * @param {string} type - El tipo de mensaje ('error', 'success', 'info').
+         */
+        function showResult(message, type) {
+            if (type === 'success') {
+                resultArea.innerHTML = message;
+            } else {
+                const colorClass = type === 'error' ? 'text-red-400' : 'text-gray-300';
+                resultArea.innerHTML = `<p class="${colorClass}">${message}</p>`;
+            }
+        }
+        
+        /**
+         * Restaura el botón de descarga a su estado original.
+         */
+        function resetButton() {
+            downloadButton.disabled = false;
+            downloadButton.innerHTML = '<i class="fas fa-download mr-2"></i> <span>Descargar</span>';
+        }
+
+        /**
+         * Valida si una cadena de texto es una URL válida.
+         * @param {string} string - La cadena a validar.
+         * @returns {boolean}
+         */
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>
